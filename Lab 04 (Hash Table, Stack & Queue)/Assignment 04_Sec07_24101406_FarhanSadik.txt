@@ -1,0 +1,199 @@
+//Task 1
+    private int hashFunction( String key ){
+        String y = "";
+        int sum= 0;
+        int count = 0, count2=1;
+        for(int i=0; i<key.length(); i++){
+            if(count==2){
+                sum += Integer.parseInt(y);
+                y="";
+                count = 0;
+            }
+            else{
+                int temp = (int)key.charAt(i);
+                y += Integer.toString(temp);
+                count++;
+            }
+            count2++;
+        }
+        if(count2%2!=0){
+            String x ="N";
+            int temp = (int)x.charAt(0);
+            y += Integer.toString(temp);
+            sum += Integer.parseInt(y);
+        }
+        return sum%ht.length;
+    }
+
+    public String searchHashtable( Object[] keyValuePair ){
+        String x = (String)keyValuePair[0];
+        int indexOfHash = hashFunction(x);
+        PairNode current = ht[indexOfHash];
+        while (current != null){
+            if(current.key == x) return "Found";
+            current = current.next;
+        }
+        return "Not Found";
+    }
+
+
+
+
+
+//Task 2
+    private int hashFunction( String key ){
+        int sum=0;
+        for(int i=0; i<key.length(); i++){
+            if(key.length()%2==0 && i%2==0){
+                char ch = key.charAt(i);
+                sum += (int)ch;
+            }
+            else if(key.length()%2!=0 && i%2!=0){
+                char ch = key.charAt(i);
+                sum += (int)ch;
+            }
+        }
+        return sum%ht.length;
+    }
+
+    public void insert(String key, Integer value){
+        int index = hashFunction(key);
+        FruitNode newOne = new FruitNode(key, value);
+        if(ht[index] == null){
+            ht[index] = newOne;
+        }
+        else{
+            FruitNode current = ht[index];
+            boolean check =true;
+            while (current.next!=null) {
+                if(current.fruit[0] == key){
+                    if((int)current.fruit[1] >= value){
+                        check = false;
+                        break;
+                    }
+                }
+                current = current.next;
+            }
+            if(check){
+                current.next = newOne;
+            }
+        }
+    }
+
+
+
+
+//Task 3
+    private int hashFunction( Integer key ){
+        return (key + 3) % 6;
+    }
+
+    public void remove( Integer key ){
+        int index = hashFunction(key);
+        if(ht[index] == null){
+            return;
+        }
+        PairNode current = ht[index];
+        PairNode temp = null;
+        while (current!= null) {
+            if(current.key == key && temp == null){
+                ht[index] = current.next;
+                break;
+            }
+            if(current.key == key){
+                temp.next = current.next;
+            }
+            temp = current;
+            current = current.next;
+        }        
+    }
+}
+
+
+
+
+
+//Task 4
+    public static int diamondCount(Stack stack, String str) {
+        int count =0;
+        for(int i=0; i<str.length(); i++){
+            char ch = str.charAt(i);
+            if(ch=='<'){
+                stack.push(ch);
+            }
+            else if(ch=='>'){
+                if(!stack.isEmpty()){
+                    stack.pop();
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+
+
+
+
+//Task 5
+    public static void removeBlock(Stack stack, int n) {
+        Stack temp = new Stack();
+        for(int i=0; i<n-1; i++){
+            temp.push(stack.pop());
+        }
+        stack.pop();
+        for(int i=0; i<n-1; i++){
+            stack.push(temp.pop());
+        }
+    }
+
+
+
+
+
+//Task 6
+    public static Stack conditionalReverse(Stack stack) {
+        Stack temp = new Stack();
+        while (!stack.isEmpty()){
+            int x = stack.pop();
+            if(!temp.isEmpty() && x==temp.peek()){
+                continue;
+            }
+            else{
+                temp.push(x);
+            }
+        }
+        return temp;
+    }
+
+
+
+
+
+//Task 7
+    public void enqueueCall(int customerId, boolean isVip) {
+        if(isVip){
+            System.out.println(customerId+ " added to VIP queue.");
+            vipQueue.enqueue(customerId);
+        }
+        else{
+            System.out.println(customerId+ " added to Regular queue.");
+            regularQueue.enqueue(customerId);
+        }
+    }
+
+    public void dequeueCall() {
+        if(!vipQueue.isEmpty()){
+            vipQueue.dequeue();
+        }
+        else if(!regularQueue.isEmpty()){
+            regularQueue.dequeue();
+        }
+    }
+
+    public void displayQueue() {
+        System.out.println("VIP Queue: ");
+        vipQueue.displayQueue();
+        System.out.println("Regular Queue: ");
+        regularQueue.displayQueue();
+    }

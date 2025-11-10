@@ -1,0 +1,257 @@
+//Task 1
+public class Task1 {
+    public static Node alternateMerge( Node head1, Node head2 ){
+        Node current1 = head1;
+        Node current2 = head2;
+        int index =0;
+        if (head1==null) return head1;
+        if (head2==null) return head2;
+        while (current1!=null && current2!= null){
+            if(current1.next == null){
+                break;
+            }
+            else if(index%2 == 0){
+                Node temp1 = current1.next;
+                Node temp2 = current2.next;
+                current1.next = current2;
+                current2.next = temp1;
+                current2 = temp2;
+            }
+            current1 = current1.next;
+            index++;
+        }
+        if (current2 != null) {
+            current1.next = current2;
+        }
+        return head1;
+    }
+}
+
+
+
+
+
+//Task 2
+public class Task2 {
+    public static Node wordDecoder( Node head ){       
+        Node dummyHead = new Node(null, null);
+        Node current = head;
+        int size = 0;
+        while (current!= null) {
+            size++;
+            current = current.next;
+        }
+        int index = 0;
+        int d = 13%size;
+        Node current2 = head;
+        Node current3 = dummyHead;
+        while(current2 != null){
+            if(index !=0 && index%d==0){
+                current3.next = current2;
+                current3 = current3.next;
+            }
+            current2 = current2.next;
+            index++;
+        }
+        current3.next = null;
+        Node prev = null;
+        Node current4 = dummyHead.next;
+        while(current4 != null){
+            Node temp = current4.next;
+            current4.next = prev;
+            prev = current4;
+            current4 = temp;
+        }
+        return prev;
+    }
+}
+
+
+
+
+
+//Task 3
+public class Task3 {
+    public static Node idGenerator(Node head1, Node head2, Node head3) {
+        Node prev = head1;
+        Node current = head1.next;
+        while (current!= null) {
+            Node temp = current.next;
+            current.next = prev;
+            prev = current;
+            current = temp;
+        }
+        Node last = head1;
+        last.next = null;
+        Node current_2 = head2;
+        Node current_3 = head3;
+        while (current_2!= null && current_3!= null) {
+            int x = (int)current_2.elem + (int)current_3.elem;
+            if(x>=10){
+                int y = x%10;
+                last.next = new Node(y);
+            }
+            else{
+                last.next = new Node(x);
+            }
+            current_2 = current_2.next;
+            current_3 = current_3.next;
+            last = last.next;
+        }
+        return prev;
+    }
+}
+
+
+
+
+
+//Task 4
+public class Patient{
+
+    public Integer id;
+    public String name;
+    public Integer age;
+    public String bloodGroup;
+    public Patient next;
+    public Patient prev;
+
+    public Patient(Integer x,String y,Integer z,String k,Patient next,Patient prev){
+        id = x;
+        name = y;
+        age = z;
+        bloodGroup =k;
+        this.next = next;
+        this.prev = prev;
+    }
+}
+
+public class WRM {
+    Patient dh;
+
+    public WRM() {
+        dh = new Patient(null, null, null, null, null, null);
+        dh.next = dh;
+        dh.prev = dh;
+    }
+
+    public void registerPatient(int id, String name, int age, String bloodgroup) {
+        Patient newPatient = new Patient(id, name, age, bloodgroup, dh, dh.prev);
+        dh.prev.next = newPatient;
+        dh.prev = newPatient;
+        System.out.println("Success, Registering Patient");
+    }
+
+    public void servePatient() {
+        if(dh.next== dh){
+            System.out.println("No Patient");
+            return;
+        }
+        Patient done = dh.next;
+        System.out.println(done.name + " Served");
+        dh.next = done.next;
+        done.next.prev = dh;
+    }
+
+    public void showAllPatient() {
+        if(dh.next== dh){
+            System.out.println("No Patient in the Line");
+            return;
+        }
+        Patient current = dh.next;
+        while(current != dh){
+            System.out.print(current.name+" ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    public boolean canDoctorGoHome() {
+        if(dh.next!= dh){
+            return false;
+        }
+        return true;
+    }
+
+    public void cancelAll() {
+        dh.next = dh;
+        dh.prev = dh;
+        System.out.println("Success");
+    }
+
+    public void reverseTheLine() {
+        if(dh.next== dh){
+            System.out.println("No Patient in the Line");
+            return;
+        }
+        Patient current = dh.next;
+        Patient temp = null;
+        while (current != dh) {
+            temp = current.next;
+            current.next = current.prev;
+            current.prev = temp;
+            current = temp;
+        }
+        temp = dh.next;
+        dh.next = dh.prev;
+        dh.prev = temp;
+    }
+
+}
+
+import java.util.Scanner;
+public class WRMTester {
+    public static void main(String[] args) {
+        System.out.println("** Welcome to Waiting Room Management System **");
+        Scanner user_input = new Scanner(System.in);
+        Boolean stop = true;
+        WRM s1 = new WRM();
+        while (stop) {
+            System.out.println("== Choose an Option ==");
+            System.out.println("1. RegisterPatient()");
+            System.out.println("2. ServePatient");
+            System.out.println("3. CancelAll");
+            System.out.println("4. CanDoctorGoHome");
+            System.out.println("5. ShowAllPatient");
+            System.out.println("6. ReverseTheLine");
+            System.out.println("7. exit");
+            System.out.println("======================");
+            System.out.print("Enter your choice: ");
+            int x = user_input.nextInt();
+            if(x==7){
+                stop = false;
+            }
+            else if(x==1){
+                System.out.print("Enter ID: ");
+                int id = user_input.nextInt();
+                System.out.print("Enter Name: ");
+                String name = user_input.next();
+                System.out.print("Enter Age: ");
+                int age = user_input.nextInt();
+                System.out.print("Enter Blood Group: ");
+                String bloodGroup = user_input.next();
+                s1.registerPatient(id, name, age, bloodGroup);
+            }
+            else if(x==3){
+                s1.cancelAll();
+            }
+            else if(x==4){
+                System.out.println(s1.canDoctorGoHome());
+            }
+            else if(x==2){
+                s1.servePatient();
+            }
+            else if(x==5){
+                s1.showAllPatient();
+            }
+            else if(x==6){
+                s1.reverseTheLine();
+            }
+            else{
+                System.out.println("Invalid Inputs");
+            }
+        }
+        user_input.close();
+    }
+}
+

@@ -1,0 +1,168 @@
+//Task 1
+class Task1{
+    public static void walkZigzag( Integer[][] matrix ){
+        for(int j=0; j<matrix[0].length; j++){
+            if(j%2==0){
+                for(int i=0; i<matrix.length; i++){
+                    if(i%2==0){
+                        System.out.print(matrix[i][j] + " ");
+                    }
+                }
+            }
+            else if (j%2!=0){
+                for(int i=matrix.length-1; i>=0; i--){
+                    if(i%2!=0){
+                        System.out.print(matrix[i][j] + " ");
+                    }
+                }
+            }
+            System.out.println();
+        }
+    }
+}
+
+
+
+
+
+//Task 2
+class Task2{
+    public static Integer[] decryptMatrix( Integer[][] matrix ){
+        Integer[] finalOutput = new Integer[matrix[0].length - 1];
+        Integer prevSum = 0;
+        Integer currentSum = 0;
+        for(int j=0; j<matrix[0].length; j++){
+            Integer sum = 0;
+            for(int i=0; i<matrix.length; i++){
+                sum += matrix[i][j];
+            }
+            prevSum = currentSum;
+            currentSum = sum;
+            if(j>0){
+                finalOutput[j-1] = (currentSum-prevSum);
+            }
+        }
+        return finalOutput;
+    }
+}
+
+
+
+
+
+//Task 3
+class Task3{
+    public static Integer rowRotation( Integer examWeek, String[][] matrix ){
+        String[][] temp = new String[1][matrix[0].length];
+        for(int i=0; i<examWeek-1; i++){
+            temp[0] = matrix[matrix.length-1];
+            for (int j=matrix.length-1; j>=0; j--){
+                if(j == 0){
+                    matrix[j] = temp[0];
+                }
+                else{
+                    matrix[j] = matrix[j-1];
+                }
+            }
+        }
+        Arr.print2D(matrix);
+        String a = "AA";
+        Integer row = 0;
+        for (int i=0; i<matrix.length; i++){
+            for (int j=0; j<matrix[0].length; j++){
+                if(a== matrix[i][j]){
+                    row = i+1;
+                    break;
+                }
+            }
+        }
+        return row;
+    }
+}
+
+
+
+
+
+//Task 4
+class Task4{
+    public static Integer[][] compressMatrix( Integer[][] matrix ){
+        Integer[][] output = new Integer[2][2];
+        Integer sum1 =0, sum2 =0, sum3 =0, sum4 =0;
+        for (int i=0; i<matrix.length; i++){
+            for (int j=0; j<matrix[0].length; j++){
+                if(i<matrix.length/2 && j<matrix[0].length/2){
+                    sum1 += matrix[i][j];
+                }
+                else if(i<matrix.length/2 && j>=matrix[0].length/2){
+                    sum2 += matrix[i][j];
+                }
+                else if(i>=matrix.length/2 && j<matrix[0].length/2){
+                    sum3 += matrix[i][j];
+                }
+                else if(i>=matrix.length/2 && j>=matrix[0].length/2){
+                    sum4 += matrix[i][j];
+                }
+            }
+        }
+        output[0][0] = sum1;
+        output[0][1] = sum2;
+        output[1][0] = sum3;
+        output[1][1] = sum4;
+        return output;
+    }
+}
+
+
+
+
+
+//Task 5
+class Task5{
+    public static void playGame( Integer[][] arena ){
+        Integer sum = 0;
+        for (int i=0; i<arena.length; i++){
+            for (int j=0; j<arena[0].length; j++){
+                if(arena[i][j]%50== 0 && arena[i][j]!=0){
+                    if(i!=0 && i!=(arena.length-1) && j!=(arena[0].length-1) && j!=0){
+                        if(arena[i][j+1] == 2) sum += arena[i][j+1];
+                        if(arena[i][j-1] == 2) sum += arena[i][j-1];
+                        if(arena[i-1][j] == 2) sum += arena[i-1][j];
+                        if(arena[i+1][j] == 2) sum += arena[i+1][j];
+                    }
+                    else if(i==0 && j!=(arena[0].length-1) && j!=0){
+                        if(arena[i][j-1] == 2) sum += arena[i][j-1];
+                        if(arena[i][j+1] == 2) sum += arena[i][j+1];
+                    }
+                    else if(i==0 && j!=0){
+                        if(arena[i][j-1] == 2) sum += arena[i][j-1];
+                    }
+                    else if(i==0 && j!=(arena[0].length-1)){
+                        if(arena[i][j+1] == 2) sum += arena[i][j+1];
+                    }
+                    else if(i<(arena.length-1) && j==0){
+                        if(arena[i-1][j] == 2) sum += arena[i-1][j];
+                        if(arena[i+1][j] == 2) sum += arena[i+1][j];
+                        if(arena[i][j+1] == 2) sum += arena[i][j+1];
+                    }
+                    else if(i==(arena.length-1) && j!=(arena[0].length-1) && j!=0){
+                        if(arena[i][j+1] == 2) sum += arena[i][j+1];
+                        if(arena[i][j-1] == 2) sum += arena[i][j-1];
+                        if(arena[i-1][j] == 2) sum += arena[i-1][j];
+                    }
+                    else if(i!=0 && i!=(arena.length-1) && j==(arena[0].length-1)){
+                        if(arena[i][j-1] == 2) sum += arena[i][j-1];
+                        if(arena[i+1][j] == 2) sum += arena[i+1][j];
+                        if(arena[i-1][j] == 2) sum += arena[i-1][j];
+                    }
+                }
+            }
+        }
+        if(sum<10){
+            System.out.println("Points Gained: "+sum+". Your team is out.");
+        }
+        else{
+            System.out.println("Points Gained: "+sum+". Your team has survived the game.");
+        }
+    }
+}
